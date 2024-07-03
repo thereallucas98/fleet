@@ -3,6 +3,8 @@
 
 ### Project ###
 
+.env
+
 .expo/
 npm-debug.*
 *.jks
