@@ -9,10 +9,11 @@ import { AppProvider, UserProvider } from '@realm/react'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { StatusBar } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components/native'
 
 import { Loading } from '~/components/loading'
-import { Home } from '~/screens/private/home'
+import { Routes } from '~/routes'
 import { SignIn } from '~/screens/public/sign-in'
 import theme from '~/theme'
 
@@ -36,16 +37,18 @@ export default function App() {
 
   return (
     <AppProvider id={REALM_APP_ID}>
-      <ThemeProvider theme={theme}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="transparent"
-          translucent
-        />
-        <UserProvider fallback={SignIn}>
-          <Home />
-        </UserProvider>
-      </ThemeProvider>
+      <SafeAreaProvider>
+        <ThemeProvider theme={theme}>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          <UserProvider fallback={SignIn}>
+            <Routes />
+          </UserProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
     </AppProvider>
   )
 }
