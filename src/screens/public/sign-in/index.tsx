@@ -1,7 +1,9 @@
 import { IOS_CLIENT_ID, WEB_CLIENT_ID } from '@env'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { useApp } from '@realm/react'
 import { useCallback, useState } from 'react'
 import { Alert } from 'react-native'
+import { Credentials } from 'realm'
 
 import backgroundImg from '~/assets/background.png'
 import { Button } from '~/components/button'
@@ -15,6 +17,7 @@ GoogleSignin.configure({
 })
 
 export function SignIn() {
+  const app = useApp()
   const [isAutenticating, setIsAuthenticanting] = useState(false)
 
   const handleGoogleSignIn = useCallback(async () => {
@@ -24,7 +27,9 @@ export function SignIn() {
       const { idToken } = await GoogleSignin.signIn()
 
       if (idToken) {
-        // TOKEN
+        const credentials = Credentials.jwt(idToken)
+
+        await app.logIn(credentials)
       } else {
         Alert.alert(
           'Entrar',
@@ -37,7 +42,7 @@ export function SignIn() {
       Alert.alert('Entrar', 'Não foi possível conectar-se a sua conta google.')
       setIsAuthenticanting(false)
     }
-  }, [])
+  }, [app])
 
   return (
     <Container source={backgroundImg}>
